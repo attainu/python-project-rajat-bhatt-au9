@@ -14,29 +14,39 @@ class BitcoinNotification:
         json_response = response.json()
         currentBitcoinPrice = json_response['bpi']['INR']['rate_float']
         #print(currentBitcoinPrice)
-        return currentBitcoinPrice
+        return round(currentBitcoinPrice,2)
 
 
     def postWebhooks(self, event, value):
-        data = {'value1':value}
         ifttt_event_url  = self.Webhooks_URL.format(event)
-        requests.post(ifttt_event_url, json=data)
+        requests.post(ifttt_event_url, json=value)
     
 
     def sendIFTTTEmergencyNotificaton(self):
-        #bitcoin_history = []
         price = self.getBitcoinPrice()
-        date = datetime.now()
-        #bitcoin_history.append({'date': date, 'price': price})
-        self.postWebhooks('bitcoin_price_emergency', price)
+        value = {'value1': price}
+        self.postWebhooks('bitcoin_price_emergency', value)
 
     def sendTelegramNotificaton(self):
-        #bitcoin_history = []
+        
         price = self.getBitcoinPrice()
-        date = datetime.now()
-        #bitcoin_history.append({'date': date, 'price': price})
-        self.postWebhooks('bitcoin_price_update', price)
-        time.sleep(5 * 60)  # Sleep for 5 minutes
+        value = {'value1': price}
+        self.postWebhooks('bitcoin_price_update', value)
+        
+        #time.sleep(5 * 60)  # Sleep for 5 minutes
+
+    def sendGmailNotification(self):
+
+        name = input('Please enter your name: ')
+        email = input('Please enter your Email: ')
+        price = self.getBitcoinPrice()
+        
+        value = {'value1':email, 'value2':name, 'value3': price}
+        
+        self.postWebhooks('email_notification', value)
+
+
+
 
 
 
@@ -45,6 +55,7 @@ if __name__ == "__main__":
     Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/no2QXAKRWEMzu572PNeau5QTtIA3TrOrm4oRjtBLLY6'
 
     b1 = BitcoinNotification(Bitcoin_Api_URL,Webhooks_URL)
-    b1.getBitcoinPrice()
-    #b1.sendIFTTTEmergencyNotificaton()
-    b1.sendTelegramNotificaton()
+    
+    b1.sendIFTTTEmergencyNotificaton()
+    #b1.sendTelegramNotificaton()
+    #b1.sendGmailNotification()
