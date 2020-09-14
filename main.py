@@ -3,6 +3,7 @@ import requests
 import time
 from datetime import datetime
 import argparse
+import sys
 
 class BitcoinNotification:
     def __init__(self, Bitcoin_Api_URL, Webhooks_URL):
@@ -10,12 +11,19 @@ class BitcoinNotification:
         self.Webhooks_URL = Webhooks_URL
 
     def getBitcoinPrice(self):
-        api_url = self.Bitcoin_Api_URL
-        response = requests.get(api_url)
-        json_response = response.json()
-        currentBitcoinPrice = json_response['bpi']['INR']['rate_float']
-        #print(currentBitcoinPrice)
-        return round(currentBitcoinPrice,2)
+        try:    
+            api_url = self.Bitcoin_Api_URL
+            response = requests.get(api_url)  
+            json_response = response.json()
+            currentBitcoinPrice = json_response['bpi']['INR']['rate_float']
+            #print(currentBitcoinPrice)
+            return round(currentBitcoinPrice,2)
+
+        except requests.exceptions.RequestException:    # This is the correct syntax
+            print(' NO Internet, Please check your Internet connection and rumn program again. ')
+            sys.exit()
+            
+        
 
 
     def postWebhooks(self, event, value):
@@ -25,6 +33,7 @@ class BitcoinNotification:
 
     def sendIFTTTEmergencyNotificaton(self):
         price = self.getBitcoinPrice()
+        
         value = {'value1': price}
         self.postWebhooks('bitcoin_price_emergency', value)
         print("Emergency notification sent")
@@ -32,6 +41,7 @@ class BitcoinNotification:
     def sendTelegramNotificaton(self):
         
         price = self.getBitcoinPrice()
+        
         value = {'value1': price}
         self.postWebhooks('bitcoin_price_update', value)
         print("Telegram Notification sent")
@@ -43,6 +53,7 @@ class BitcoinNotification:
         name = input('Please enter your name: ')
         email = input('Please enter your Email: ')
         price = self.getBitcoinPrice()
+        
         value = {'value1':email, 'value2':name, 'value3': price}
         self.postWebhooks('email_notification', value)
         print("Email notification sent")
@@ -101,8 +112,8 @@ if __name__ == "__main__":
         help='There are various options to recive notifications from us (1)IFTTT app (2) Telegram app (3) Email')
     new_args = parser.parse_args()
     print('Running Application with time interval of ', new_args.interval[0],
-          ' and threshold = ₹', new_args.threshold[0], 'and Destination = ',
-          new_args.destination)
+        ' and threshold = ₹', new_args.threshold[0], 'and Destination = ',
+        new_args.destination)
     # calls the function to send notifications
     if (new_args.destination == 'telegram' and new_args.threshold[0] < current_bitcoinprice):
         print('''\
@@ -116,3 +127,4 @@ if __name__ == "__main__":
         b1.sendIFTTTEmergencyNotificaton()
     if (new_args.destination == 'email'):
         b1.sendGmailNotification()
+
