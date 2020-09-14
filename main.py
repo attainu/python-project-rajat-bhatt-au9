@@ -11,21 +11,21 @@ class BitcoinNotification:
         self.Webhooks_URL = Webhooks_URL
 
     def getBitcoinPrice(self):
-        try:    
+        try:   
             api_url = self.Bitcoin_Api_URL
-            response = requests.get(api_url)  
+            #Api calling for bitcoin prices in INR  
+            response = requests.get(api_url)
             json_response = response.json()
             currentBitcoinPrice = json_response['bpi']['INR']['rate_float']
-            #print(currentBitcoinPrice)
+            
             return round(currentBitcoinPrice,2)
-
-        except requests.exceptions.RequestException:    # This is the correct syntax
-            print(' NO Internet, Please check your Internet connection and rumn program again. ')
+        
+        # print cutomized msg if there is no internet access
+        except requests.exceptions.RequestException:
+            print(' NO Internet, Please check your Internet connection and run program again. ')
             sys.exit()
             
         
-
-
     def postWebhooks(self, event, value):
         ifttt_event_url  = self.Webhooks_URL.format(event)
         requests.post(ifttt_event_url, json=value)
@@ -33,7 +33,6 @@ class BitcoinNotification:
 
     def sendIFTTTEmergencyNotificaton(self):
         price = self.getBitcoinPrice()
-        
         value = {'value1': price}
         self.postWebhooks('bitcoin_price_emergency', value)
         print("Emergency notification sent")
@@ -41,7 +40,6 @@ class BitcoinNotification:
     def sendTelegramNotificaton(self):
         
         price = self.getBitcoinPrice()
-        
         value = {'value1': price}
         self.postWebhooks('bitcoin_price_update', value)
         print("Telegram Notification sent")
@@ -55,7 +53,7 @@ class BitcoinNotification:
         price = self.getBitcoinPrice()
         
         value = {'value1':email, 'value2':name, 'value3': price}
-        self.postWebhooks('email_notification', value)
+        self.postWebhooks('email_bitcoin_notification', value)
         print("Email notification sent")
 
 
@@ -64,12 +62,12 @@ class BitcoinNotification:
 
 if __name__ == "__main__":
     Bitcoin_Api_URL = 'https://api.coindesk.com/v1/bpi/currentprice/INR.json'
-    Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/no2QXAKRWEMzu572PNeau5QTtIA3TrOrm4oRjtBLLY6'
-
+    
+    #for bitcoin.notification123@gmail.com
+    Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
+    #Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/no2QXAKRWEMzu572PNeau5QTtIA3TrOrm4oRjtBLLY6'
     b1 = BitcoinNotification(Bitcoin_Api_URL,Webhooks_URL)
     current_bitcoinprice = b1.getBitcoinPrice()
-    
-##################################################################################################################
 
 
     parser = argparse.ArgumentParser(
@@ -119,7 +117,7 @@ if __name__ == "__main__":
         print('''\
             To recive the notification
         from Telegram, install the telegram app and join the
-        channel @IFTTT
+        channel using this link - https://t.me/bitcoin_notificationrajat
         ''')
         b1.sendTelegramNotificaton()
     
