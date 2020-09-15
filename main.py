@@ -36,33 +36,35 @@ class BitcoinNotification:
         ifttt_event_url = self.Webhooks_URL.format(event)
         requests.post(ifttt_event_url, json=value)
 
-    def sendIFTTTEmergencyNotificaton(self):
+    def sendIFTTTEmergencyNotificaton(self, time_interval):
 
         try:
             price = self.getBitcoinPrice()
             value = {'value1': price}
             self.postWebhooks('bitcoin_price_emergency', value)
             print("Emergency notification sent")
+            time.sleep(float(time_interval[0]) * 60)
 
         except KeyboardInterrupt:
             print('Exiting from this application, Please wait.....')
             time.sleep(5)
             print('ThankYou for using this Application')
 
-    def sendTelegramNotificaton(self):
+    def sendTelegramNotificaton(self, time_interval):
 
         try:
             price = self.getBitcoinPrice()
             value = {'value1': price}
             self.postWebhooks('bitcoin_price_update', value)
             print("Telegram Notification sent")
+            time.sleep(float(time_interval[0]) * 60)
 
         except KeyboardInterrupt:
             print('Exiting from this application, Please wait.....')
             time.sleep(5)
             print('ThankYou for using this Application')
 
-    def sendGmailNotification(self):
+    def sendGmailNotification(self, time_interval):
 
         try:
             regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -74,6 +76,7 @@ class BitcoinNotification:
                 value = {'value1': email, 'value2': name, 'value3': price}
                 self.postWebhooks('email_bitcoin_notification', value)
                 print('Email notification sent')
+                time.sleep(float(time_interval[0]) * 60)
             else:
                 print('Invalid Email ,'+name)
                 print('Please re-run the program and provide valid email')
@@ -89,8 +92,7 @@ if __name__ == "__main__":
 
     Bitcoin_Api_URL = 'https://api.coindesk.com/v1/bpi/currentprice/INR.json'
     # for bitcoin.notification123@gmail.com
-    Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/'
-    'with/key/jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
+    Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
 
     b1 = BitcoinNotification(Bitcoin_Api_URL, Webhooks_URL)
     current_bitcoinprice = b1.getBitcoinPrice()
@@ -151,12 +153,12 @@ if __name__ == "__main__":
         channel using this link - https://t.me/bitcoin_notificationrajat or
         follow @Bitcoinprice_notificationrajat
         ''')
-        b1.sendTelegramNotificaton()
+        b1.sendTelegramNotificaton(new_args.interval)
 
     if (new_args.destination == 'ifttt' or
             new_args.threshold[0] > current_bitcoinprice):
 
-        b1.sendIFTTTEmergencyNotificaton()
+        b1.sendIFTTTEmergencyNotificaton(new_args.interval)
 
     if (new_args.destination == 'email'):
-        b1.sendGmailNotification()
+        b1.sendGmailNotification(new_args.interval)
