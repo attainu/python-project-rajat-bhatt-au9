@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     new_args = parser.parse_args()
     print('Running Application with time interval of ', new_args.interval[0],
-          'and threshold = ₹', new_args.threshold[0], 'and Destination = ',
+          'mins and threshold = ₹', new_args.threshold[0], 'and Destination= ',
           new_args.destination)
 
     # calls the function to send notifications
