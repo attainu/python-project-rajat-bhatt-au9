@@ -6,7 +6,7 @@ with open('README.md') as readme_file:
 
 setup(
     name="bitcoin_notifier_rajatbhatt500",
-    version="0.0.1",
+    version="0.0.4",
     description="A Python package to get Bitcoin price on various platform.",
     long_description=README,
     long_description_content_type="text/markdown",

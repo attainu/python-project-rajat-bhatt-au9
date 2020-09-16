@@ -39,11 +39,12 @@ class BitcoinNotification:
     def sendIFTTTEmergencyNotificaton(self, time_interval):
 
         try:
-            price = self.getBitcoinPrice()
-            value = {'value1': price}
-            self.postWebhooks('bitcoin_price_emergency', value)
-            print("Emergency notification sent")
-            time.sleep(float(time_interval[0]) * 60)
+            while True:
+                price = self.getBitcoinPrice()
+                value = {'value1': price}
+                self.postWebhooks('bitcoin_price_emergency', value)
+                print("Emergency notification sent")
+                time.sleep(float(time_interval[0]) * 60)
 
         except KeyboardInterrupt:
             print('Exiting from this application, Please wait.....')
@@ -53,11 +54,12 @@ class BitcoinNotification:
     def sendTelegramNotificaton(self, time_interval):
 
         try:
-            price = self.getBitcoinPrice()
-            value = {'value1': price}
-            self.postWebhooks('bitcoin_price_update', value)
-            print("Telegram Notification sent")
-            time.sleep(float(time_interval[0]) * 60)
+            while True:
+                price = self.getBitcoinPrice()
+                value = {'value1': price}
+                self.postWebhooks('bitcoin_price_update', value)
+                print("Telegram Notification sent")
+                time.sleep(float(time_interval[0]) * 60)
 
         except KeyboardInterrupt:
             print('Exiting from this application, Please wait.....')
@@ -70,17 +72,19 @@ class BitcoinNotification:
             regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
             name = input('Please enter your name: ')
             email = input('Please enter your Email: ')
-            # chceking email is valid
-            if(re.search(regex, email)):
-                price = self.getBitcoinPrice()
-                value = {'value1': email, 'value2': name, 'value3': price}
-                self.postWebhooks('email_bitcoin_notification', value)
-                print('Email notification sent')
-                time.sleep(float(time_interval[0]) * 60)
-            else:
-                print('Invalid Email ,'+name)
-                print('Please re-run the program and provide valid email')
-                sys.exit()
+            while True:
+                
+                # chceking email is valid
+                if(re.search(regex, email)):
+                    price = self.getBitcoinPrice()
+                    value = {'value1': email, 'value2': name, 'value3': price}
+                    self.postWebhooks('email_bitcoin_notification', value)
+                    print('Email notification sent')
+                    time.sleep(float(time_interval[0]) * 60)
+                else:
+                    print('Invalid Email ,'+name)
+                    print('Please re-run the program and provide valid email')
+                    sys.exit()
 
         except KeyboardInterrupt:
             print('Exiting from this application, Please wait.....')
@@ -91,7 +95,7 @@ class BitcoinNotification:
 def main():
 
     Bitcoin_Api_URL = 'https://api.coindesk.com/v1/bpi/currentprice/INR.json'
-    # for bitcoin.notification123@gmail.com
+    # for bitcoin.notificaion123@gmail.com
     Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
 
     b1 = BitcoinNotification(Bitcoin_Api_URL, Webhooks_URL)
