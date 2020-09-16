@@ -61,7 +61,7 @@ Copyright @Rajat Bhatt
 ```
 To here the example for notification in telegram:
 ```bash
-bitcoin-notification -t 1000 -i 2 -d telegram
+bitcoin-notification -t 600000 -i 2 -d telegram
 ```
 
 ## License
