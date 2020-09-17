@@ -26,7 +26,8 @@ setup(
     install_requires=["requests"],
     entry_points={
         "console_scripts": [
-            "bitcoin-notification = bitcoin_notifier_rajatbhatt500.bitcoin_price:main",
+            "bitcoin-notification ="
+            "bitcoin_notifier_rajatbhatt500.bitcoin_price:main",
         ]
     },
 )

@@ -73,7 +73,7 @@ class BitcoinNotification:
             name = input('Please enter your name: ')
             email = input('Please enter your Email: ')
             while True:
-                
+
                 # chceking email is valid
                 if(re.search(regex, email)):
                     price = self.getBitcoinPrice()
@@ -96,8 +96,9 @@ def main():
 
     Bitcoin_Api_URL = 'https://api.coindesk.com/v1/bpi/currentprice/INR.json'
     # for bitcoin.notificaion123@gmail.com
-    Webhooks_URL = 'https://maker.ifttt.com/trigger/{}/with/key/jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
-
+    url = 'https://maker.ifttt.com/trigger/{}/with/key/'
+    key = 'jrvNIRNL-vboEF2g3mcaDoUitHgy-Z180veQ4JkbYNf'
+    Webhooks_URL = url + key
     b1 = BitcoinNotification(Bitcoin_Api_URL, Webhooks_URL)
     current_bitcoinprice = b1.getBitcoinPrice()
     parser = argparse.ArgumentParser(
