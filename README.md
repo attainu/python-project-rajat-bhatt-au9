@@ -14,7 +14,7 @@ Main aim is to give notification on selected platform on regular intervals which
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install bitcoin notification package.
 
 ```bash
-pip install bitcoin-notifier-rajatbhatt500==0.0.1
+pip install bitcoin-notifier-rajatbhatt500
 ```
 
 ## Prerequisite
