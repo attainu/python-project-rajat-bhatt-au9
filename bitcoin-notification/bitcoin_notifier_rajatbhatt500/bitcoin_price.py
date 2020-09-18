@@ -69,7 +69,7 @@ class BitcoinNotification:
     def sendGmailNotification(self, time_interval):
 
         try:
-            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+            regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
             name = input('Please enter your name: ')
             email = input('Please enter your Email: ')
             while True:
@@ -82,7 +82,7 @@ class BitcoinNotification:
                     print('Email notification sent')
                     time.sleep(float(time_interval[0]) * 60)
                 else:
-                    print('Invalid Email ,'+name)
+                    print('Invalid Email ,' + name)
                     print('Please re-run the program and provide valid email')
                     sys.exit()
 
