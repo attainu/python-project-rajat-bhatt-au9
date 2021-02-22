@@ -1,0 +1,5 @@
+{
+    "python.linting.enabled": true,
+    "python.dataScience.allowUnauthorizedRemoteConnection": true,
+    "python.linting.flake8Enabled": true
+}

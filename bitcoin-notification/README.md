@@ -38,7 +38,7 @@ usage:             Usage: This app gives the price of 1 Bitcoin in INR.
             telegram by default.
             To recive notification from IFTTT install IFTTT mobile app.
             To recive notifications on Telegram install Telegram app
-            and join this channel https://t.me/bitcoin_notificationrajat .
+            and join this channel @IFTTT.
 
             Prerequisite : INSTALL IFTTT APP AND TELEGRAM APP
             and TO RECIVE NOTIFICATON.
@@ -61,7 +61,7 @@ Copyright @Rajat Bhatt
 ```
 To here the example for notification in telegram:
 ```bash
-bitcoin-notification -t 600000 -i 2 -d telegram
+bitcoin-notification -t 1000 -i 2 -d telegram
 ```
 
 ## License
